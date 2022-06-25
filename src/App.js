@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
 
-function App() {
+import { auth } from './configs/firebase'
+import AppNavigator from './containers/Navigator/AppNavigator'
+
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  auth.onAuthStateChanged((user) => {
+    return user ? setIsLoggedIn(true) : setIsLoggedIn(false)
+  })
+
+  console.log('Logged in?: ', isLoggedIn)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <AppNavigator />
+    </Router>
+  )
 }
-
-export default App;
