@@ -1,13 +1,26 @@
 import useSWR from 'swr';
 
-// function Profile() {
-//   const { data, error } = useSWR('/api/user', fetcher)
+// TODO: Clean up into separate, probably `api`?, file
+const fetcher = async (url: string) => {
+	const response = await fetch(url);
+	if (!response.ok) {
+		throw new Error('An error occured while fetching the data');
+	}
 
-//   if (error) return <div>failed to load</div>
-//   if (!data) return <div>loading...</div>
-//   return <div>hello {data.name}!</div>
-// }
+	const data = await response.json();
+	return data;
+};
 
 export default function Home() {
-	return <>Hello World!</>;
+	const { data, error } = useSWR('http://localhost:8000', fetcher);
+
+	if (error) {
+		return <div>Error: {error.message}</div>;
+	}
+
+	return (
+		<div>
+			{data ? <p>Data from backend: {data.message}</p> : <p>Loading...</p>}
+		</div>
+	);
 }
