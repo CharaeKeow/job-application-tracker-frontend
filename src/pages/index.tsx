@@ -1,15 +1,7 @@
 import useSWR from 'swr';
 
-// TODO: Clean up into separate, probably `api`?, file
-const fetcher = async (url: string) => {
-	const response = await fetch(url);
-	if (!response.ok) {
-		throw new Error('An error occured while fetching the data');
-	}
-
-	const data = await response.json();
-	return data;
-};
+import { fetcher } from '@/utils/fetcher';
+import Seo from '@/components/Seo';
 
 export default function Home() {
 	const { data, error } = useSWR('http://localhost:8000', fetcher);
@@ -20,6 +12,7 @@ export default function Home() {
 
 	return (
 		<div>
+			<Seo />
 			{data ? <p>Data from backend: {data.message}</p> : <p>Loading...</p>}
 		</div>
 	);
