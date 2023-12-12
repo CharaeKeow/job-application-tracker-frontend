@@ -6,7 +6,7 @@ import { titilliumWeb } from './fonts';
 
 function AuthButton() {
 	const { data: session } = useSession();
-	console.log({ session });
+	// console.log({ session });
 
 	if (session) {
 		return (

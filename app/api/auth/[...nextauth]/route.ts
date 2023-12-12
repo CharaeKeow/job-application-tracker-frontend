@@ -1,25 +1,20 @@
 import NextAuth from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
+import getConfig from 'next/config';
 
 import { User } from '@/app/types/User';
+import { post } from '@/app/utils/fetch.util';
+
+const { publicRuntimeConfig } = getConfig();
+const API_BASE_URL = publicRuntimeConfig.API_BASE_URL;
 
 async function getUser({ email, provider }: Pick<User, 'email' | 'provider'>) {
 	try {
-		// TODO: Create a wrapper for this, since I'll be using fetch a lot for BE call!
-		const response = await fetch(
-			'http://localhost:8000/api/user/check-user-exist',
-			{
-				method: 'POST',
-				cache: 'no-cache',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ email, provider }),
-			},
-		);
-
-		const { exist } = await response.json();
+		const { exist } = await post(API_BASE_URL + 'user/check-user-exist', {
+			email,
+			provider,
+		});
 
 		return exist;
 	} catch (error) {
@@ -30,17 +25,7 @@ async function getUser({ email, provider }: Pick<User, 'email' | 'provider'>) {
 
 async function saveUser(user: User) {
 	try {
-		console.log({ user });
-
-		// TODO: Create a wrapper for this, since I'll be using fetch a lot for BE call!
-		const response = await fetch('http://localhost:8000/api/user/save-user', {
-			method: 'POST',
-			cache: 'no-cache',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({ user }),
-		});
+		await post(API_BASE_URL + 'user/save-user', { user });
 	} catch (error) {
 		console.error('Failed saving user data: ', error);
 		throw new Error('Failed saving user.');
@@ -73,15 +58,11 @@ export const authOptions = {
 			account: any;
 			credentials?: any;
 		}) {
-			console.log({ user, profile, account, credentials });
-
 			const { name, email, image } = user;
-			const { provider } = account;
+			const { provider } = account; // provider is stored in account object
 
 			// check if user exist
 			const userExist = await getUser({ email, provider });
-
-			console.log(userExist);
 
 			// if user not exist, save data in DB
 			if (!userExist) {

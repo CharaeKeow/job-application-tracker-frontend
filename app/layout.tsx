@@ -19,7 +19,7 @@ export default async function Layout({
 }) {
 	const session = await getServerSession();
 
-	console.log({ session });
+	// console.log({ session });
 
 	return (
 		<html lang="en">
