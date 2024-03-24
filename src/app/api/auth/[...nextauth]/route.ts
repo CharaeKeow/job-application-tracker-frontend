@@ -3,20 +3,23 @@ import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import getConfig from 'next/config';
 
-import { User } from '@/app/types/User';
-import { post } from '@/app/utils/fetch.util';
+import { User } from '@/src/app/types/user';
+import { post } from '@/src/app/utils/fetch.util';
 
 const { publicRuntimeConfig } = getConfig();
 const API_BASE_URL = publicRuntimeConfig.API_BASE_URL;
 
 async function getUser({ email, provider }: Pick<User, 'email' | 'provider'>) {
 	try {
-		const { exist } = await post(API_BASE_URL + 'user/check-user-exist', {
-			email,
-			provider,
-		});
+		const { exist, id = null } = await post(
+			API_BASE_URL + 'user/check-user-exist',
+			{
+				email,
+				provider,
+			},
+		);
 
-		return exist;
+		return { exist, id };
 	} catch (error) {
 		console.error('Failed to fetched user: ', error);
 		throw new Error('Failed to fetch user.');
@@ -57,19 +60,46 @@ export const authOptions = {
 			profile?: any;
 			account: any;
 			credentials?: any;
+			session?: any;
 		}) {
 			const { name, email, image } = user;
 			const { provider } = account; // provider is stored in account object
 
+			console.log({ user });
+
 			// check if user exist
-			const userExist = await getUser({ email, provider });
+			const { exist: userExist, id } = await getUser({ email, provider });
 
 			// if user not exist, save data in DB
-			if (!userExist) {
+			if (userExist) {
+				user.dbId = id;
+			} else {
 				const res = await saveUser({ name, email, image, provider });
 			}
 
+			console.log({ user });
 			return true;
+		},
+		async jwt({ token, user }: { token: any; user: any }) {
+			// console.log({ jwtToken: token, jwtUser: user });
+			if (user) {
+				token.userId = user.dbId;
+			}
+
+			return token;
+		},
+		async session({
+			session,
+			token,
+			user,
+		}: {
+			session: any;
+			token: any;
+			user: any;
+		}) {
+			session.userId = token.userId;
+			// console.log({ session, token });
+			return session;
 		},
 	},
 };

@@ -3,9 +3,10 @@ import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 
 import '@/app/ui/global.css';
-import { inter } from '@/app/ui/fonts';
-import SessionProvider from '@/app/ui/session-provider';
-import Navbar from '@/app/ui/navbar';
+import { inter } from '@/src/app/ui/fonts';
+import SessionProvider from '@/src/app/ui/session-provider';
+import Navbar from '@/src/app/ui/navbar';
+import { authOptions } from './api/auth/[...nextauth]/route';
 
 export const metadata: Metadata = {
 	title: 'Job Application Tracker',
@@ -17,9 +18,9 @@ export default async function Layout({
 }: {
 	children: React.ReactNode;
 }) {
-	const session = await getServerSession();
+	const session = await getServerSession(authOptions);
 
-	// console.log({ session });
+	console.log({ session });
 
 	return (
 		<html lang="en">
