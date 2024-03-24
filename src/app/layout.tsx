@@ -2,7 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 
-import '@/app/ui/global.css';
+import '@/src/app/ui/global.css';
 import { inter } from '@/src/app/ui/fonts';
 import SessionProvider from '@/src/app/ui/session-provider';
 import Navbar from '@/src/app/ui/navbar';
