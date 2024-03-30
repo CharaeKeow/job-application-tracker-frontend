@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 import getConfig from 'next/config';
+import jwt from 'jsonwebtoken';
 
 import { authOptions } from '../api/auth/[...nextauth]/route';
 import { post } from '../utils/fetch.util';
@@ -26,9 +27,12 @@ async function saveJobApplication({
 	jobApplication?: JobApplication;
 }) {
 	try {
-		const res = await post(API_BASE_URL + 'job/create', {
-			userId,
-			jobApplication,
+		const res = await post({
+			url: API_BASE_URL + 'job-application/create',
+			body: {
+				userId,
+				jobApplication,
+			},
 		});
 	} catch (error) {
 		console.error('Failed to save job application: ', error);
@@ -41,6 +45,9 @@ export async function createJobApplication(
 	prevState: State,
 	formData: FormData,
 ) {
+	// const session = await getServerSession(authOptions);
+
+	// console.log({ session });
 	const {
 		company,
 		companyType,
@@ -56,9 +63,34 @@ export async function createJobApplication(
 
 	// get userId from session
 	const { userId } = await getServerSession(authOptions);
+	const secret = process.env.JWT_SECRET ?? '';
 
-	console.log(formData);
-	console.log({ rating });
+	// TODO: Function to sign the token (so just call it?)
+	const token = jwt.sign({ userId }, secret, { expiresIn: '10m' });
+
+	// console.log(formData);
+	console.log({
+		company,
+		companyType,
+		position,
+		status,
+		link,
+		description,
+		excitement,
+		dateApplied,
+	});
+	// console.log({ rating });
+	console.log({ userId });
+
+	try {
+		await post({
+			url: 'http://localhost:8000/api/job-application/create',
+			body: {},
+			headers: { Authorization: token },
+		});
+	} catch (error) {
+		console.error(error);
+	}
 
 	// ! Think there's a better way to achieve this?
 	// const jobApplication: JobApplication = {

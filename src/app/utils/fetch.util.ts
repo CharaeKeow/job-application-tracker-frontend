@@ -2,9 +2,14 @@
  * Helper function perform a fetch() GET request.
  * @param url - The endpoint for the GET request
  */
-export async function get(url: string) {
+export async function get({ url, headers }: { url: string; headers?: {} }) {
+	// const token = getToken();
+
 	const requestOptions = {
 		method: 'GET',
+		headers: {
+			...headers,
+		},
 	};
 	const response = await fetch(url, requestOptions);
 
@@ -16,12 +21,21 @@ export async function get(url: string) {
  * @param route
  * @returns
  */
-// TODO: Find the type for `body`?
-export async function post(url: string, body: any) {
+// TODO: Find the type for `body` and `header`?
+export async function post({
+	url,
+	body,
+	headers,
+}: {
+	url: string;
+	body: any;
+	headers?: any;
+}) {
 	const requestOptions = {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
+			...headers,
 		},
 		body: JSON.stringify(body),
 	};

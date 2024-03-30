@@ -11,13 +11,13 @@ const API_BASE_URL = publicRuntimeConfig.API_BASE_URL;
 
 async function getUser({ email, provider }: Pick<User, 'email' | 'provider'>) {
 	try {
-		const { exist, id = null } = await post(
-			API_BASE_URL + 'user/check-user-exist',
-			{
+		const { exist, id = null } = await post({
+			url: API_BASE_URL + 'user/check-user-exist',
+			body: {
 				email,
 				provider,
 			},
-		);
+		});
 
 		return { exist, id };
 	} catch (error) {
@@ -28,7 +28,7 @@ async function getUser({ email, provider }: Pick<User, 'email' | 'provider'>) {
 
 async function saveUser(user: User) {
 	try {
-		await post(API_BASE_URL + 'user/save-user', { user });
+		await post({ url: API_BASE_URL + 'user/save-user', body: { user } });
 	} catch (error) {
 		console.error('Failed saving user data: ', error);
 		throw new Error('Failed saving user.');
@@ -80,10 +80,19 @@ export const authOptions = {
 			console.log({ user });
 			return true;
 		},
-		async jwt({ token, user }: { token: any; user: any }) {
+		async jwt({
+			token,
+			user,
+			account,
+		}: {
+			token: any;
+			user: any;
+			account: any;
+		}) {
 			// console.log({ jwtToken: token, jwtUser: user });
 			if (user) {
 				token.userId = user.dbId;
+				token.accessToken = account.access_token;
 			}
 
 			return token;
@@ -98,7 +107,8 @@ export const authOptions = {
 			user: any;
 		}) {
 			session.userId = token.userId;
-			// console.log({ session, token });
+			session.accessToken = token.accessToken;
+
 			return session;
 		},
 	},
