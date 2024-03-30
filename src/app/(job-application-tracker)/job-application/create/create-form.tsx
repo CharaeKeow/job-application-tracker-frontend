@@ -5,13 +5,10 @@ import Link from 'next/link';
 import { useFormState } from 'react-dom';
 
 import { Button } from '@/src/app/ui/button';
-import { State, createJobApplication } from '@/src/app/lib/action';
-import StarRating from '../star-rating';
+import { State, createJobApplication } from './action';
+import StarRating from '../../../ui/star-rating';
 
-export default function Form({}: // jobApplication,
-{
-	// jobApplication: JobApplication;
-}) {
+export default function Form({}: {}) {
 	const initialState = { message: null, errors: {} };
 	const [rating, setRating] = useState(0);
 	const createJobApplicationWithRating = createJobApplication.bind(

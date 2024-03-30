@@ -5,9 +5,9 @@ import { getServerSession } from 'next-auth';
 import getConfig from 'next/config';
 import jwt from 'jsonwebtoken';
 
-import { authOptions } from '../api/auth/[...nextauth]/route';
-import { post } from '../utils/fetch.util';
-import { JobApplication } from '../types/job-application';
+import { authOptions } from '../../../api/auth/[...nextauth]/route';
+import { post } from '../../../utils/fetch.util';
+import { JobApplication } from '../../../types/job-application';
 import { redirect } from 'next/navigation';
 
 const { publicRuntimeConfig } = getConfig();
