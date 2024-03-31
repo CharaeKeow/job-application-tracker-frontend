@@ -3,8 +3,6 @@
  * @param url - The endpoint for the GET request
  */
 export async function get({ url, headers }: { url: string; headers?: {} }) {
-	// const token = getToken();
-
 	const requestOptions = {
 		method: 'GET',
 		headers: {
