@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
+
 'use client';
 
-import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { signOut, useSession } from 'next-auth/react';
 
 import { titilliumWeb } from './fonts';
 
@@ -13,14 +15,15 @@ function AuthButton() {
 			<div className="flex items-center gap-2">
 				{session?.user?.image && (
 					<img
-						className="rounded-full w-8 h-8"
+						className="size-8 rounded-full"
 						src={session?.user?.image}
-						alt="User image"
+						alt="User"
 					/>
 				)}
 				<p className="text-sm">{session?.user?.name ?? session?.user?.email}</p>
 				<button
-					className="text-sm text-red-500 hover:underline transition-all"
+					type="button"
+					className="text-sm text-red-500 transition-all hover:underline"
 					onClick={() => signOut()}
 				>
 					Sign Out
@@ -32,13 +35,13 @@ function AuthButton() {
 	return (
 		<div className="flex items-center gap-2">
 			<Link
-				className="font-medium rounded-md border border-gray-800 bg-white px-4 py-2 text-sm text-black transition-colors hover:bg-gray-100"
+				className="rounded-md border border-gray-800 bg-white px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-gray-100"
 				href="/auth/signin"
 			>
 				Sign In
 			</Link>
 			<Link
-				className="font-medium rounded-md bg-gray-800 px-4 py-2 text-sm text-white transition-colors hover:bg-gray-700"
+				className="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gray-700"
 				href="/auth/signup"
 			>
 				Create Account
@@ -49,11 +52,11 @@ function AuthButton() {
 
 export default function Navbar() {
 	return (
-		<div className="w-full min-h-[68px] sticky top-0 flex justify-center">
-			<header className="max-w-7xl w-full flex items-center justify-between p-3">
+		<div className="sticky top-0 flex min-h-[68px] w-full justify-center">
+			<header className="flex w-full max-w-7xl items-center justify-between p-3">
 				<Link
 					href="/"
-					className={`${titilliumWeb.className} font-bold text-2xl`}
+					className={`${titilliumWeb.className} text-2xl font-bold`}
 				>
 					Job Application Tracker 💼💻
 				</Link>

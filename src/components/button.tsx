@@ -8,8 +8,9 @@ export function Button({ children, className, ...rest }: ButtonProps) {
 	return (
 		<button
 			{...rest}
+			type="button"
 			className={clsx(
-				'bg-gray-800 rounded-lg px-4 w-fit h-10 text-white font-medium text-base flex items-center justify-center self-end hover:bg-gray-700',
+				'flex h-10 w-fit items-center justify-center self-end rounded-lg bg-gray-800 px-4 text-base font-medium text-white hover:bg-gray-700',
 				className,
 			)}
 		>

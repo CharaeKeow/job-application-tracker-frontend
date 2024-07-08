@@ -5,13 +5,12 @@ type StarRatingsProps = {
 	onRatingChange: (rating: number) => void;
 };
 
-export default function StarRating({
-	rating,
-	onRatingChange,
-}: StarRatingsProps) {
+const StarRating = ({ rating, onRatingChange }: StarRatingsProps) => {
 	return (
+		// eslint-disable-next-line tailwindcss/no-custom-classname
 		<div className="star-rating">
 			{Array.from({ length: 5 }, (_, index) => {
+				// eslint-disable-next-line no-param-reassign
 				index += 1;
 				return (
 					<button
@@ -27,7 +26,7 @@ export default function StarRating({
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 24 24"
 							fill="currentColor"
-							className="w-6 h-6"
+							className="size-6"
 						>
 							<path
 								fillRule="evenodd"
@@ -40,4 +39,6 @@ export default function StarRating({
 			})}
 		</div>
 	);
-}
+};
+
+export default StarRating;

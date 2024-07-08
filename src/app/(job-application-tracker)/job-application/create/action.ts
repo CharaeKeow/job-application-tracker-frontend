@@ -2,18 +2,19 @@
 
 import { revalidatePath } from 'next/cache';
 import getConfig from 'next/config';
-
-import { post } from '@/src/utils/fetch.util';
-import {
-	CompanyType,
-	JobApplication,
-	Status,
-} from '../../../../types/job-application';
-import getAuthHeader from '@/src/utils/sign-auth-token.util';
 import { redirect } from 'next/navigation';
 
+import { post } from '@/src/utils/fetch.util';
+import getAuthHeader from '@/src/utils/sign-auth-token.util';
+
+import type {
+	CompanyType,
+	JobApplication,
+} from '../../../../types/job-application';
+import { Status } from '../../../../types/job-application';
+
 const { publicRuntimeConfig } = getConfig();
-const API_BASE_URL = publicRuntimeConfig.API_BASE_URL;
+const { API_BASE_URL } = publicRuntimeConfig;
 
 export type State = {
 	errors?: {}; // TODO: Add error for fields here

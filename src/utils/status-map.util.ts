@@ -1,4 +1,4 @@
-import { Status } from '../types/job-application';
+import { Status } from '@/src/types/job-application';
 
 // Define a mapping of statuses to their corresponding text with emojis
 const statusMap: Record<Status, string> = {

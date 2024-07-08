@@ -11,7 +11,7 @@ export async function get({ url, headers }: { url: string; headers?: {} }) {
 	};
 	const response = await fetch(url, requestOptions);
 
-	return await response.json();
+	return response.json();
 }
 
 /**
@@ -41,5 +41,5 @@ export async function post({
 		cache: 'no-cache', // TODO: See how to handle this
 	});
 
-	return await response.json();
+	return response.json();
 }

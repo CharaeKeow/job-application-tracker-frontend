@@ -1,11 +1,13 @@
-import React from 'react';
-import { Metadata } from 'next';
-import { getServerSession } from 'next-auth';
-
 import '@/src/components/global.css';
+
+import type { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import React from 'react';
+
 import { inter } from '@/src/components/fonts';
-import SessionProvider from '@/src/components/session-provider';
 import Navbar from '@/src/components/navbar';
+import SessionProvider from '@/src/components/session-provider';
+
 import { authOptions } from './api/auth/[...nextauth]/route';
 
 export const metadata: Metadata = {

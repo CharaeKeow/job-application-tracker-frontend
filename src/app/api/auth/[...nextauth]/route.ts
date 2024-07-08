@@ -1,18 +1,19 @@
+/* eslint-disable no-param-reassign */
+import getConfig from 'next/config';
 import NextAuth from 'next-auth';
 import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
-import getConfig from 'next/config';
 
-import { User } from '@/src/types/user';
+import type { User } from '@/src/types/user';
 import { post } from '@/src/utils/fetch.util';
 
 const { publicRuntimeConfig } = getConfig();
-const API_BASE_URL = publicRuntimeConfig.API_BASE_URL;
+const { API_BASE_URL } = publicRuntimeConfig;
 
 async function getUser({ email, provider }: Pick<User, 'email' | 'provider'>) {
 	try {
 		const { exist, id = null } = await post({
-			url: API_BASE_URL + 'user/check-user-exist',
+			url: `${API_BASE_URL}user/check-user-exist`,
 			body: {
 				email,
 				provider,
@@ -28,7 +29,7 @@ async function getUser({ email, provider }: Pick<User, 'email' | 'provider'>) {
 
 async function saveUser(user: User) {
 	try {
-		await post({ url: API_BASE_URL + 'user/save-user', body: { user } });
+		await post({ url: `${API_BASE_URL}user/save-user`, body: { user } });
 	} catch (error) {
 		console.error('Failed saving user data: ', error);
 		throw new Error('Failed saving user.');
@@ -52,9 +53,7 @@ export const authOptions = {
 	callbacks: {
 		async signIn({
 			user,
-			profile,
 			account,
-			credentials,
 		}: {
 			user: any;
 			profile?: any;
@@ -72,20 +71,12 @@ export const authOptions = {
 			if (userExist) {
 				user.dbId = id;
 			} else {
-				const res = await saveUser({ name, email, image, provider });
+				await saveUser({ name, email, image, provider });
 			}
 
 			return true;
 		},
-		async jwt({
-			token,
-			user,
-			account,
-		}: {
-			token: any;
-			user: any;
-			account: any;
-		}) {
+		async jwt({ token, user }: { token: any; user: any; account: any }) {
 			// console.log({ jwtToken: token, jwtUser: user, account });
 			if (user) {
 				token.userId = user.dbId;
@@ -93,17 +84,8 @@ export const authOptions = {
 
 			return token;
 		},
-		async session({
-			session,
-			token,
-			user,
-		}: {
-			session: any;
-			token: any;
-			user: any;
-		}) {
+		async session({ session, token }: { session: any; token: any; user: any }) {
 			session.userId = token.userId;
-			// session.accessToken = token.accessToken;
 
 			return session;
 		},

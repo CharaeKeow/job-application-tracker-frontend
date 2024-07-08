@@ -1,21 +1,28 @@
+// TODO: Come back later to look at this stupid issue. My labels do have `htmlFor` and I think me ids are correct
+// Maybe I'm missing something
+/* eslint-disable jsx-a11y/label-has-associated-control */
+
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
+import React, { useState } from 'react';
 import { useFormState } from 'react-dom';
 
-import { Button } from '@/src/app/ui/button';
-import { State, createJobApplication } from './action';
-import StarRating from '../../../ui/star-rating';
+import { Button } from '@/src/components/button';
 
-export default function Form({}: {}) {
+import StarRating from '../../../../components/star-rating';
+import type { State } from './action';
+import { createJobApplication } from './action';
+
+export default function Form() {
 	const initialState = { message: null, errors: {} };
-	const [rating, setRating] = useState(0);
+	const [rating, setRating] = useState(4);
 	const createJobApplicationWithRating = createJobApplication.bind(
 		null,
 		rating,
 	);
 
+	// eslint-disable-next-line unused-imports/no-unused-vars
 	const [state, dispatch] = useFormState<State, FormData>(
 		createJobApplicationWithRating,
 		initialState,
@@ -28,56 +35,59 @@ export default function Form({}: {}) {
 				<div className="mb-4">
 					<label htmlFor="job-title" className="mb-2 block text-sm font-medium">
 						Job Title: <span className="text-red-600">*</span>
-					</label>
-					<div className="relative mt-2 rounded-md">
-						<div className="relative">
-							<input
-								id="job-title"
-								name="job-title"
-								type="text"
-								placeholder="Job Title"
-								required
-								className="peer block w-full rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500"
-							/>
+						<div className="relative mt-2 rounded-md">
+							<div className="relative">
+								<input
+									id="job-position"
+									name="job-title"
+									type="text"
+									placeholder="Job Title"
+									defaultValue="Full Stack Web Developer"
+									required
+									className="peer block w-full rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500"
+								/>
+							</div>
 						</div>
-					</div>
+					</label>
 				</div>
 
 				{/* Company name: input text */}
 				<div className="mb-4">
 					<label htmlFor="company" className="mb-2 block text-sm font-medium">
 						Company: <span className="text-red-600">*</span>
-					</label>
-					<div className="relative mt-2 rounded-md">
-						<div className="relative">
-							<input
-								id="company"
-								name="company"
-								type="text"
-								placeholder="Company Name"
-								required
-								className="peer block w-full rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500"
-							/>
+						<div className="relative mt-2 rounded-md">
+							<div className="relative">
+								<input
+									id="company"
+									name="company"
+									type="text"
+									placeholder="Company Name"
+									defaultValue="Xsolla"
+									required
+									className="peer block w-full rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500"
+								/>
+							</div>
 						</div>
-					</div>
+					</label>
 				</div>
 
 				{/* URL: input text, optional */}
 				<div className="mb-4">
 					<label htmlFor="job-url" className="mb-2 block text-sm font-medium">
 						Job Post URL:
-					</label>
-					<div className="relative mt-2 rounded-md">
-						<div className="relative">
-							<input
-								id="job-url"
-								name="job-url"
-								type="text"
-								placeholder="Link to the original job post"
-								className="peer block w-full rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500"
-							/>
+						<div className="relative mt-2 rounded-md">
+							<div className="relative">
+								<input
+									id="link"
+									name="link"
+									type="text"
+									defaultValue="https://www.linkedin.com/jobs/view/3813018427"
+									placeholder="Link to the original job post"
+									className="peer block w-full rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500"
+								/>
+							</div>
 						</div>
-					</div>
+					</label>
 				</div>
 
 				{/* Company type: dropdown, optional */}
@@ -90,10 +100,11 @@ export default function Form({}: {}) {
 							<div className="flex items-center">
 								<input
 									id="startup"
-									name="company-type"
+									name="companyType"
 									type="radio"
 									value="startup"
-									className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+									className="size-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+									defaultChecked
 								/>
 								<label
 									htmlFor="startup"
@@ -105,10 +116,10 @@ export default function Form({}: {}) {
 							<div className="flex items-center">
 								<input
 									id="mnc"
-									name="company-type"
+									name="companyType"
 									type="radio"
 									value="mnc"
-									className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+									className="size-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
 								/>
 								<label
 									htmlFor="mnc"
@@ -120,10 +131,10 @@ export default function Form({}: {}) {
 							<div className="flex items-center">
 								<input
 									id="other"
-									name="company-type"
+									name="companyType"
 									type="radio"
 									value="other"
-									className="h-4 w-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
+									className="size-4 border-gray-300 bg-gray-100 text-gray-600 focus:ring-2 focus:ring-gray-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-gray-600"
 								/>
 								<label
 									htmlFor="other"
@@ -152,7 +163,8 @@ export default function Form({}: {}) {
 								rows={10}
 								placeholder="Enter job description here"
 								className="w-full rounded-md border border-gray-200 py-2 pl-4 text-sm outline-2 placeholder:text-gray-500"
-							></textarea>
+								defaultValue="Cool products and office. Quite a diverse team. PHP though :("
+							/>
 						</div>
 					</div>
 				</div>
