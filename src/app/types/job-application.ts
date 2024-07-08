@@ -6,8 +6,8 @@ export enum CompanyType {
 
 export enum Status {
 	bookmarked = 'Bookmarked',
-	applying = 'Applying',
-	applied = 'Applied',
+	applying = 'Applying', // still finishing up the formed
+	applied = 'Applied', // sent
 	interviewing = 'Interviewing',
 	negotiating = 'Negotiating',
 	accepted = 'Accepted',

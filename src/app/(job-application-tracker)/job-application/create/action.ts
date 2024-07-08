@@ -3,10 +3,14 @@
 import { revalidatePath } from 'next/cache';
 import getConfig from 'next/config';
 
-import { post } from '../../../utils/fetch.util';
-import { JobApplication } from '../../../types/job-application';
-import { redirect } from 'next/navigation';
+import { post } from '@/src/app/utils/fetch.util';
+import {
+	CompanyType,
+	JobApplication,
+	Status,
+} from '../../../types/job-application';
 import getAuthHeader from '@/src/app/utils/sign-auth-token.util';
+import { redirect } from 'next/navigation';
 
 const { publicRuntimeConfig } = getConfig();
 const API_BASE_URL = publicRuntimeConfig.API_BASE_URL;
@@ -21,66 +25,33 @@ export async function createJobApplication(
 	prevState: State,
 	formData: FormData,
 ) {
-	// const session = await getServerSession(authOptions);
+	const { company, companyType, position, link, description } =
+		Object.fromEntries(formData.entries()) as Record<string, string>;
 
-	// console.log({ session });
-	const {
+	const jobApplication: JobApplication = {
 		company,
-		companyType,
+		companyType: companyType as CompanyType,
 		position,
-		status,
 		link,
 		description,
-		excitement,
-		dateApplied,
-	} = Object.fromEntries(formData.entries());
-
-	// const jobApplication: JobApplication = Object.fromEntries(formData.entries());
+		status: Status.applying, // TODO: Should I add this to the form indeed?
+		excitement: rating,
+		dateApplied: new Date(),
+	};
 
 	// TODO: Function to sign the token (so just call it?)
 	const authHeader = await getAuthHeader();
 
-	// console.log(formData);
-	console.log({
-		company,
-		companyType,
-		position,
-		status,
-		link,
-		description,
-		excitement,
-		dateApplied,
-	});
-
 	try {
 		await post({
 			url: `${API_BASE_URL}job-application/create`,
-			body: {},
+			body: { jobApplication },
 			headers: { ...authHeader },
 		});
 	} catch (error) {
 		console.error(error);
-	}
-
-	// ! Think there's a better way to achieve this?
-	// const jobApplication: JobApplication = {
-	// 	company: company,
-	// 	companyType,
-	// 	position,
-	// 	status,
-	// 	link,
-	// 	description,
-	// 	excitement,
-	// 	dateApplied,
-	// }
-
-	try {
-		// request to backend to save the data
-		// await saveJobApplication({ userId });
-	} catch (error) {
-		console.error(error);
 		return {
-			message: 'Database Error: Failed adding a new job application',
+			message: 'Fetch error', // TODO: Proper message
 		};
 	}
 

@@ -20,8 +20,6 @@ export default async function Layout({
 }) {
 	const session = await getServerSession(authOptions);
 
-	console.log({ session });
-
 	return (
 		<html lang="en">
 			<body className={`${inter.className} antialiased`}>

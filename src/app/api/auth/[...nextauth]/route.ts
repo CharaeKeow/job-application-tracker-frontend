@@ -65,8 +65,6 @@ export const authOptions = {
 			const { name, email, image } = user;
 			const { provider } = account; // provider is stored in account object
 
-			console.log({ user });
-
 			// check if user exist
 			const { exist: userExist, id } = await getUser({ email, provider });
 
@@ -77,7 +75,6 @@ export const authOptions = {
 				const res = await saveUser({ name, email, image, provider });
 			}
 
-			console.log({ user });
 			return true;
 		},
 		async jwt({
@@ -89,10 +86,9 @@ export const authOptions = {
 			user: any;
 			account: any;
 		}) {
-			// console.log({ jwtToken: token, jwtUser: user });
+			// console.log({ jwtToken: token, jwtUser: user, account });
 			if (user) {
 				token.userId = user.dbId;
-				token.accessToken = account.access_token;
 			}
 
 			return token;
@@ -107,7 +103,7 @@ export const authOptions = {
 			user: any;
 		}) {
 			session.userId = token.userId;
-			session.accessToken = token.accessToken;
+			// session.accessToken = token.accessToken;
 
 			return session;
 		},

@@ -16,8 +16,6 @@ export async function get({ url, headers }: { url: string; headers?: {} }) {
 
 /**
  * Helper function to wrap fetch() POST request
- * @param route
- * @returns
  */
 // TODO: Find the type for `body` and `header`?
 export async function post({
