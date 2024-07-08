@@ -2,8 +2,8 @@ import { getServerSession } from 'next-auth';
 import { getProviders } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 
-import GoogleButton from '@/src/app/ui/buttons/google-button';
-import GithubButton from '@/src/app/ui/buttons/github-button';
+import GoogleButton from '@/src/components/buttons/google-button';
+import GithubButton from '@/src/components/buttons/github-button';
 
 export default async function SignUp() {
 	const session = await getServerSession();

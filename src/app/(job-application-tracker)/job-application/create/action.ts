@@ -3,13 +3,13 @@
 import { revalidatePath } from 'next/cache';
 import getConfig from 'next/config';
 
-import { post } from '@/src/app/utils/fetch.util';
+import { post } from '@/src/utils/fetch.util';
 import {
 	CompanyType,
 	JobApplication,
 	Status,
-} from '../../../types/job-application';
-import getAuthHeader from '@/src/app/utils/sign-auth-token.util';
+} from '../../../../types/job-application';
+import getAuthHeader from '@/src/utils/sign-auth-token.util';
 import { redirect } from 'next/navigation';
 
 const { publicRuntimeConfig } = getConfig();

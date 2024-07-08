@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import jwt from 'jsonwebtoken';
 
-import { authOptions } from '../api/auth/[...nextauth]/route';
+import { authOptions } from '../app/api/auth/[...nextauth]/route';
 
 /**
  * Sign userId into JWT token

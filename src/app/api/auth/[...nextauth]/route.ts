@@ -3,8 +3,8 @@ import GitHubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 import getConfig from 'next/config';
 
-import { User } from '@/src/app/types/user';
-import { post } from '@/src/app/utils/fetch.util';
+import { User } from '@/src/types/user';
+import { post } from '@/src/utils/fetch.util';
 
 const { publicRuntimeConfig } = getConfig();
 const API_BASE_URL = publicRuntimeConfig.API_BASE_URL;
